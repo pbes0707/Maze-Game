@@ -17,6 +17,7 @@ ExportedObj/
 *.booproj
 *.svd
 *.unityproj
+Maze Game/Assets/UnityVS
 
 # Unity3D generated meta files
 *.pidb.meta
