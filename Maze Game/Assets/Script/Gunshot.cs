@@ -14,7 +14,7 @@ public class Gunshot : MonoBehaviour {
 	    if(Input.GetMouseButtonDown(0))
         {
             GameObject temp = (GameObject)Instantiate(bullet, shotpoint.transform.position, Quaternion.identity);
-            temp.GetComponent<Rigidbody>().AddForce(shotpoint.transform.forward * 300f);
+            temp.GetComponent<Rigidbody>().AddForce(shotpoint.transform.forward * 150f);
         }
 	}
 }

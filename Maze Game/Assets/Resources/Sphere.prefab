@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d329eaf4a6dd240844fefb8c82b959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 119900, guid: 361f2071cfbc51f4d867b370d2d166f7, type: 2}
 --- !u!135 &13565152
 SphereCollider:
   m_ObjectHideFlags: 1
