@@ -26,34 +26,46 @@ public class test : MonoBehaviour
 
         Jsondata = JsonMapper.ToObject<MapData>(Jsontext.text);
 
-        plane = Instantiate(plane,new Vector3(Jsondata.width * 2, 0, Jsondata.height * 2) , Quaternion.identity) as GameObject;
-        plane.transform.localScale = new Vector3(Jsondata.width * 0.4f, 1, Jsondata.height * 0.4f);
-        rend = plane.GetComponent<Renderer>();
-        rend.material.mainTextureScale = new Vector2(Jsondata.width, Jsondata.height); // 바닥 타일 텍스쳐
-
-        celling_cube = Instantiate(celling_cube, new Vector3(Jsondata.width * 4 / 2f, 4.5f, Jsondata.height * 4 / 2f), Quaternion.identity) as GameObject;
-        celling_cube.transform.localScale = new Vector3(Jsondata.width * 4 + 2, 1, Jsondata.height * 4 + 2);
-        rend = celling_cube.GetComponent<Renderer>();
-        rend.material.mainTextureScale = new Vector2(Jsondata.width * 4, Jsondata.height * 4); // 천장 타일 텍스쳐
+        player = Instantiate(player, new Vector3(Jsondata.beginPoints[0].x + player.transform.localScale.x / 2f, 2, Jsondata.beginPoints[0].y + player.transform.localScale.z / 2f), Quaternion.Euler(new Vector3(0, Jsondata.beginPoints[0].angle))) as GameObject;
+        GameObject cam = player.transform.Find("MainCamera").gameObject;
+        camera = cam.GetComponent<Camera>() as Camera;
 
         foreach (Point v in Jsondata.endPoints)
         {
             Instantiate(portal, new Vector3(v.x * 4 - 2, 0.1f, v.y * 4 - 2), Quaternion.identity);
         }
+        GameObject[] wall_objects = GameObject.FindGameObjectsWithTag("insidewall");
+        foreach (GameObject v in wall_objects)
+        {
+            walls.Add(v);
+        }
 
 
-        player = Instantiate(player, new Vector3(Jsondata.beginPoints[0].x + player.transform.localScale.x / 2f, 2, Jsondata.beginPoints[0].y + player.transform.localScale.z / 2f), Quaternion.Euler(new Vector3(0, Jsondata.beginPoints[0].angle))) as GameObject;
-        GameObject cam = player.transform.Find("MainCamera").gameObject;
-        camera = cam.GetComponent<Camera>() as Camera;
+        /*GameObject g_walls = new GameObject("Walls");
+
+        plane = Instantiate(plane, new Vector3(Jsondata.width * 2, 0, Jsondata.height * 2), Quaternion.identity) as GameObject;
+        plane.transform.localScale = new Vector3(Jsondata.width * 0.4f, 1, Jsondata.height * 0.4f);
+        plane.transform.parent = g_walls.transform;
+        rend = plane.GetComponent<Renderer>();
+        rend.material.mainTextureScale = new Vector2(Jsondata.width, Jsondata.height); // 바닥 타일 텍스쳐
+        
+        celling_cube = Instantiate(celling_cube, new Vector3(Jsondata.width * 4 / 2f, 4.5f, Jsondata.height * 4 / 2f), Quaternion.identity) as GameObject;
+        celling_cube.transform.localScale = new Vector3(Jsondata.width * 4 + 2, 1, Jsondata.height * 4 + 2);
+        celling_cube.transform.parent = g_walls.transform;
+        rend = celling_cube.GetComponent<Renderer>();
+        rend.material.mainTextureScale = new Vector2(Jsondata.width * 4, Jsondata.height * 4); // 천장 타일 텍스쳐
 
         foreach (NormalWall wall in Jsondata.objNormals)
         {
             GameObject temp = Instantiate(inside_wall, new Vector3(wall.x * 4 + inside_wall.transform.localScale.x / 2, 2, wall.y * 4 + inside_wall.transform.localScale.y / 2), Quaternion.identity) as GameObject;
             temp.transform.localScale = new Vector3(4, 4, 4);
+            temp.transform.parent = g_walls.transform;
+            temp.tag = "insidewall";
             walls.Add(temp);
         }
 
-        createOusideWall();
+        createOusideWall(g_walls);*/
+        //NavMeshBuilder.BuildNavMesh();
 
     }
 
@@ -101,27 +113,31 @@ public class test : MonoBehaviour
     {
     }
 
-    void createOusideWall()
+    void createOusideWall(GameObject g_walls)
     {
 
         GameObject temp_wall;
         temp_wall = Instantiate(outside_wall, new Vector3(Jsondata.width * 4 / 2f, 2f, -0.5f), Quaternion.identity) as GameObject;
         temp_wall.transform.localScale = new Vector3(Jsondata.width * 4, 4, 1);
+        temp_wall.transform.parent = g_walls.transform;
         rend = temp_wall.GetComponent<Renderer>();
         rend.material.mainTextureScale = new Vector2(Jsondata.width, 1); // 벽 타일 텍스쳐
 
         temp_wall = Instantiate(outside_wall, new Vector3(-0.5f, 2f, Jsondata.height * 4 / 2f), Quaternion.Euler(new Vector3(0, 90))) as GameObject;
         temp_wall.transform.localScale = new Vector3(Jsondata.height * 4, 4, 1);
+        temp_wall.transform.parent = g_walls.transform;
         rend = temp_wall.GetComponent<Renderer>();
         rend.material.mainTextureScale = new Vector2(Jsondata.width, 1); // 벽 타일 텍스쳐
 
         temp_wall = Instantiate(outside_wall, new Vector3(Jsondata.width * 4 + 0.5f, 2f, Jsondata.height * 4 / 2f), Quaternion.Euler(new Vector3(0, 90))) as GameObject;
         temp_wall.transform.localScale = new Vector3(Jsondata.height * 4, 4, 1);
+        temp_wall.transform.parent = g_walls.transform;
         rend = temp_wall.GetComponent<Renderer>();
         rend.material.mainTextureScale = new Vector2(Jsondata.width, 1); // 벽 타일 텍스쳐
 
         temp_wall = Instantiate(outside_wall, new Vector3(Jsondata.width * 4 / 2f, 2f, Jsondata.height * 4 + 0.5f), Quaternion.identity) as GameObject;
         temp_wall.transform.localScale = new Vector3(Jsondata.width * 4, 4, 1);
+        temp_wall.transform.parent = g_walls.transform;
         rend = temp_wall.GetComponent<Renderer>();
         rend.material.mainTextureScale = new Vector2(Jsondata.width, 1); // 벽 타일 텍스쳐
     }
