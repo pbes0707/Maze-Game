@@ -11,12 +11,12 @@ GameObject:
   - 33: {fileID: 3388426}
   - 65: {fileID: 6575812}
   - 23: {fileID: 2398656}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Inside_wall
-  m_TagString: Untagged
+  m_TagString: Obstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 8
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &482714
 Transform:

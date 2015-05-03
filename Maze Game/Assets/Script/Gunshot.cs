@@ -7,7 +7,6 @@ public class Gunshot : MonoBehaviour
     public GameObject shotpoint;
     public GameObject muzzlepoint;
     public GameObject bullet;
-    bool modeFlag = false;
 
     void Start()
     {

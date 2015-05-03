@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using LitJson;
+using Pathfinding;
 
 
 public class test : MonoBehaviour
@@ -34,14 +35,14 @@ public class test : MonoBehaviour
         {
             Instantiate(portal, new Vector3(v.x * 4 - 2, 0.1f, v.y * 4 - 2), Quaternion.identity);
         }
-        GameObject[] wall_objects = GameObject.FindGameObjectsWithTag("insidewall");
+        /*GameObject[] wall_objects = GameObject.FindGameObjectsWithTag("insidewall");
         foreach (GameObject v in wall_objects)
         {
             walls.Add(v);
-        }
+        }*/
 
 
-        /*GameObject g_walls = new GameObject("Walls");
+        GameObject g_walls = new GameObject("Walls");
 
         plane = Instantiate(plane, new Vector3(Jsondata.width * 2, 0, Jsondata.height * 2), Quaternion.identity) as GameObject;
         plane.transform.localScale = new Vector3(Jsondata.width * 0.4f, 1, Jsondata.height * 0.4f);
@@ -60,11 +61,11 @@ public class test : MonoBehaviour
             GameObject temp = Instantiate(inside_wall, new Vector3(wall.x * 4 + inside_wall.transform.localScale.x / 2, 2, wall.y * 4 + inside_wall.transform.localScale.y / 2), Quaternion.identity) as GameObject;
             temp.transform.localScale = new Vector3(4, 4, 4);
             temp.transform.parent = g_walls.transform;
-            temp.tag = "insidewall";
             walls.Add(temp);
         }
 
-        createOusideWall(g_walls);*/
+        createOusideWall(g_walls);
+        PathFinding(Jsondata.width, Jsondata.height);
         //NavMeshBuilder.BuildNavMesh();
 
     }
@@ -140,5 +141,19 @@ public class test : MonoBehaviour
         temp_wall.transform.parent = g_walls.transform;
         rend = temp_wall.GetComponent<Renderer>();
         rend.material.mainTextureScale = new Vector2(Jsondata.width, 1); // 벽 타일 텍스쳐
+    }
+    void PathFinding(int width, int height)
+    {
+        AstarData data = AstarPath.active.astarData;
+        GridGraph gg = data.AddGraph(typeof(GridGraph)) as GridGraph;
+        gg.width = width * 4;
+        gg.depth = height * 4;
+        gg.nodeSize = 1;
+        gg.center = new Vector3(Jsondata.width * 4 / 2f, 0, Jsondata.height * 4 / 2d=f);
+        gg.UpdateSizeFromWidthDepth();
+        gg.collision.mask = 1 << LayerMask.NameToLayer("Obstacles");
+        gg.collision.heightMask = 1 << LayerMask.NameToLayer("Ground");
+        
+        AstarPath.active.Scan();
     }
 }
