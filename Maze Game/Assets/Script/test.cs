@@ -149,7 +149,7 @@ public class test : MonoBehaviour
         gg.width = width * 4;
         gg.depth = height * 4;
         gg.nodeSize = 1;
-        gg.center = new Vector3(Jsondata.width * 4 / 2f, 0, Jsondata.height * 4 / 2d=f);
+        gg.center = new Vector3(Jsondata.width * 4 / 2f, 0, Jsondata.height * 4 / 2f);
         gg.UpdateSizeFromWidthDepth();
         gg.collision.mask = 1 << LayerMask.NameToLayer("Obstacles");
         gg.collision.heightMask = 1 << LayerMask.NameToLayer("Ground");
